@@ -1,0 +1,21 @@
+{
+  "name": "loan-origin-api",
+  "version": "1.0.0",
+  "description": "**This example has a working backend hosted in Heroku**  You can try all HTTP operation described in this Swagger spec.  Find source code of this API [here](https://github.com/iandrosov/loan-origin-api) ",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Apache-2.0",
+  "private": true,
+  "dependencies": {
+    "config": "^1.16.0",
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "swagger-tools": "^0.10.4"
+  }
+}

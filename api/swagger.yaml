@@ -1,0 +1,217 @@
+---
+swagger: "2.0"
+info:
+  description: "**This example has a working API hosted in Heroku**\n\nYou can\
+    \ try all HTTP operation described in this Swagger spec.\n\nFind source code of\
+    \ this API [here](https://github.com/iandrosov/loan-origin-api)\n host: loan-origin-api.herokuapp.com/"
+  version: "1.0.0"
+  title: "Loan Calculator API powered by Heroku"
+basePath: "/api"
+schemes:
+- "http"
+- "https"
+consumes:
+- "application/json"
+- "application/x-www-form-urlencoded"
+produces:
+- "application/json"
+paths:
+  /loanbasic:
+    get:
+      operationId: "calulateBasicLoanAttributes"
+      parameters:
+        - name: "principal"
+          in: "query"
+          description: "Total loan amount, loan principal"
+          required: true
+          type: "number"
+          format: "double"
+        - name: "rate"
+          in: "query"
+          description: "Interest rate"
+          required: true
+          type: "number"
+          format: "double"
+        - name: "term"
+          in: "query"
+          description: "Loan term in years only full numbers"
+          required: true
+          type: "integer"
+        - name: "propertyTax"
+          in: "query"
+          description: "Property taxes"
+          required: false
+          type: "number"
+          format: "double"
+        - name: "homeownersInsurance"
+          in: "query"
+          description: "Insurance home yearly primium"
+          required: false
+          type: "number"
+          format: "double"
+      responses:
+        200:  
+          description: "Calculate basic Loan attributes a composite function"
+          schema:
+            $ref: "#/definitions/LoanAttributes"
+      x-swagger-router-controller: "Default"
+    x-swagger-router-controller: "LoanCalculator" 
+
+  /loantypes:
+    get:
+      operationId: "getLoanTypeOptions"
+      responses:
+        200:
+          description: "Return list of Loan type options"
+          schema:
+            $ref: "#/definitions/LoanTypes"
+      x-swagger-router-controller: "Default"
+    x-swagger-router-controller: "LoanCalculator"  
+  /fhami:
+    get:
+      operationId: "calculateFHAMI"
+      parameters:
+        - name: "loanTermMonth"
+          in: "query"
+          description: "Loan term in months"
+          required: true
+          type: "integer"
+        - name: "fhaMI"
+          in: "query"
+          description: "Value FHAMI"
+          required: true
+          type: "integer"
+      responses:
+        200:  
+          description: "Calculate value for FHAMI"
+          schema:
+            $ref: "#/definitions/FHAMI"
+      x-swagger-router-controller: "Default"
+    x-swagger-router-controller: "LoanCalculator" 
+
+  /periodicinterest:
+    get:
+      operationId: "calculatePeriodicInterest"
+      parameters:
+        - name: "rate"
+          in: "query"
+          description: "interest rate percent"
+          required: true
+          type: "number"
+          format: "double"
+        - name: "payments"
+          in: "query"
+          description: "payments per year value, typical default to 12"
+          required: true
+          type: "integer"
+      responses:
+        200:  
+          description: "Calculate value for Periodic Interest"
+          schema:
+            $ref: "#/definitions/LoanResultNumber"
+      x-swagger-router-controller: "Default"
+    x-swagger-router-controller: "LoanCalculator" 
+
+  /discountfactor:
+    get:
+      operationId: "calculateDiscountFactor"
+      parameters:
+        - name: "numberOfPayments"
+          in: "query"
+          description: "Number of payments for duration of the loan can be over 30 years is 360 payments"
+          required: true
+          type: "integer"
+        - name: "periodicRate"
+          in: "query"
+          description: "periodic interste rate"
+          required: true
+          type: "number"
+          format: "double"
+      responses:
+        200:  
+          description: "Calculate value for Discount Factor"
+          schema:
+            $ref: "#/definitions/LoanResultNumber"
+      x-swagger-router-controller: "Default"
+    x-swagger-router-controller: "LoanCalculator" 
+
+  /pipayment:
+    get:
+      operationId: "calclatePIPayment"
+      parameters:
+        - name: "principal"
+          in: "query"
+          description: "principal of loan over time"
+          required: true
+          type: "number"
+          format: "double"
+        - name: "discount"
+          in: "query"
+          description: "calculated discount rate"
+          required: true
+          type: "number"
+          format: "double"
+      responses:
+        200:  
+          description: "Calculate value for PI Payment"
+          schema:
+            $ref: "#/definitions/LoanResultNumber"
+      x-swagger-router-controller: "Default"
+    x-swagger-router-controller: "LoanCalculator" 
+
+definitions:
+  LoanTypes:
+    type: array
+    items:
+      $ref: "#/definitions/LoanType"
+  LoanType:
+    type: "object"
+    properties:
+      label:
+        type: "string"
+      value:
+        type: "string"
+  FHAMI:
+    type: "number"
+    format: "double"
+  LoanResultNumber:
+    type: "object"
+    properties:
+      value:
+        type: "number"
+        format: "double"
+  LoanAttributes:
+    type: "object"
+    properties:
+      principal:
+        type: "number"
+        format: "double"
+      rate:
+        type: "number"
+        format: "double"
+      loanTermMonth:
+        type: "integer"
+      paymentPerYear:
+        type: "integer"
+      periodicInterest:
+        type: "number"
+        format: "double"
+      discountFactor:
+        type: "number"
+        format: "double"
+      monthlyPayment:
+        type: "number"
+        format: "double"
+      totalEscrowMonthly:
+        type: "number"
+        format: "double"
+      totalMonthlyPayment:
+        type: "number"
+        format: "double"
+  ErrorModel:
+    type: "object"
+    properties:
+      result:
+        type: "string"
+      resultDetails:
+        type: "string"
