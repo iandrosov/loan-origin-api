@@ -10,7 +10,7 @@ Access Swagger API documentation Heroku example URL: [Loan API Docs](https://loa
 
 ## Examples
 
-Fpr testing tehse API examples with CURL and love API on Heroku app.
+For testing these API examples with CURL and API on Heroku app.
 
 Calculate preiodic interest with rate 4.3% and 12 yearly payments [Live preiodic interest URL](https://loan-origin-api-stage.herokuapp.com/api/periodicinterest?rate=4.3&payments=12)
 
